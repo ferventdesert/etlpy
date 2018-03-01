@@ -1,32 +1,31 @@
-# etlpy
-##designed by desert
-a smart stream-like crawler &amp; etl python library
 
-##1.简介
-etlpy是基于配置文件的数据采集和清洗工具。  
+# etlpy: Python编写的流式爬虫系统
 
-写爬虫和数据清洗代码总是很烦人。因此，应该通过工具生成爬虫和数据清洗的代码！  etlpy就是为了解决这个问题而生的。  
+## 简介
 
-通过可视化和图形化设计工具，快速生成爬虫和数据清洗流程，并保存为xml文件，并由etlpy引擎解析它，即可获得最终的数据结果。
+etlpy是纯Python开发的函数库，实现流式DSL(领域特定语言)，能一行内完成爬虫，文件处理和数据清洗等。能和pandas等类库充分集成。
 
-##2.使用
-使用起来非常简单:
+它和linux的bash pipeline,C#的Linq以及作者本人开发的Hawk有高度的相似性。
+
+下面一行代码实现了获取博客园第1到10页的所有html:
 ```
-from etl import ETLTool
-tool = ETLTool();
-tool.LoadProject('project.xml', '数据清洗ETL-大众点评');
-datas = tool.RefreshDatas();
-for r in datas:
-  print(r)
+from etlpy.etlpy import *
+t= task().p.create(range(1,10)).cp('p:html').format('http://www.cnblogs.com/p{_}').get()
+#t.to_df()  生成DataFrame
+for data in t:
+    print data
+
 ```
-RefreshDatas函数返回的是生成器，通过for循环，即可自动读取所有数据。
+把上面的t改成下面的语句，自动监测算法就能自动分析网页结构，生成解析脚本：
 
-##3.基本原理
-模块分为 生成，过滤，排序，转换，执行四种。  
+`t=task().create().url.set('http://www.cnblogs.com').get().tree().detect()`
 
-利用Python的生成器，可以将不同模块组织起来，定义一个流水线，数据（python的字典）会在流水线上被加工和消费。  
 
-图形化工具是用C#开发的，使用了类似Python生成器的Linq技术。其原始思路来自于Lisp的s-表达式。
+在p列生成从1到10的数，拷贝p列到html列，将html列合并为url,并发送web请求，最后的html正文保存在html列。
 
-##4. 用途
-爬虫，计算，清洗，任何符合一定计算范式的数据，都可以使用它来完成。
+etlpy的特性有：
+
+- 同时支持python2和python3
+- 内置方便的代理，http get/post请求，写法与requests库非常相似
+- 内置正则解析，html转义，json转换等数据清洗功能，直接输出
+- 能方便地将任务按照协程，线程，进程，和多机分布式的方式进行任务并行
