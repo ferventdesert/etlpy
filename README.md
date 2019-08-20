@@ -12,12 +12,14 @@ etlpy是基于配置文件的数据采集和清洗工具。
 ##2.使用
 使用起来非常简单:
 ```
-from etl import ETLTool
-tool = ETLTool();
-tool.LoadProject('project.xml', '数据清洗ETL-大众点评');
-datas = tool.RefreshDatas();
-for r in datas:
-  print(r)
+from classInit import projectLoad
+from classInit.projectExecutor import projExecute
+
+path = 'xmlFile'
+project = projectLoad.Project_LoadXml(path + '/t.xml')
+print(project.modules)
+proj = projExecute(project)
+t = proj.projectFunction()
 ```
 RefreshDatas函数返回的是生成器，通过for循环，即可自动读取所有数据。
 
