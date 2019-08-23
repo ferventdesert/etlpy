@@ -55,7 +55,7 @@ def create(item):
 class RangeGE(Generator):
     '''数据清洗任务中数据清洗工具（ETLTool）类型（Type）为RangeGE的处理。
 
-    继承于生成类
+    继承于生成类，生成区间数
     '''
 
     def __init__(self):
@@ -73,14 +73,18 @@ class RangeGE(Generator):
         interval = int(self.Interval)
         maxvalue = int(self.MaxValue)
         minvalue = int(self.MinValue)
-        for i in range(minvalue, maxvalue, interval):
+        # 包括最大值
+        for i in range(minvalue, maxvalue + 1, interval):
             item = {self.Column: round(i, 5)}
-            #     items.append(item)
-            # return items
-            yield item
+            items.append(item)
+        return items
+        #     yield item
 
 
 class EtlGE(Generator):
+    '''子任务生成
+
+    '''
     # def generate(self, data):
     #     subetl = self.__proj__.modules[self.ETLSelector]
     #     for r in generate(subetl.AllETLTools):
@@ -89,16 +93,21 @@ class EtlGE(Generator):
 
 
 class TextGE(Generator):
+    '''从文本生成。
+
+        直接导入url,若导入url必须有'https://'或'http://'
+    '''
+
     def __init__(self):
         super(TextGE, self).__init__()
         self.Content = ''
-
-    def init(self):
+    def generate(self):
+        result = []
         self.arglists = [r.strip() for r in self.Content.split('\n')]
-
-    def generate(self, data):
         for i in range(self.Position, len(self.arglists)):
-            yield {self.Column: self.arglists[i]}
+           result.append({self.Column: self.arglists[i]})
+        return result
+            # yield
 
 
 class BfsGE(Generator):

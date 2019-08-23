@@ -55,18 +55,22 @@ class EtlEX(Executor):
 
 
 class TableEX(Executor):
-    def __init__(self):
-        super(TableEX, self).__init__()
-        self.Table = 'Table'
+    '''写入数据表，将数据保存为EXCEL
 
-    def execute(self, data):
-        tables = self.__proj__.tables
-        tname = self.Table
-        if tname not in tables:
-            tables[tname] = []
-        for r in data:
-            tables[tname].append(r)
-            yield r
+    '''
+    pass
+    # def __init__(self):
+    #     super(TableEX, self).__init__()
+    #     self.Table = 'Table'
+    #
+    # def execute(self, data):
+    #     tables = self.__proj__.tables
+    #     tname = self.Table
+    #     if tname not in tables:
+    #         tables[tname] = []
+    #     for r in data:
+    #         tables[tname].append(r)
+    #         yield r
 
 
 class SaveFileEX(Executor):

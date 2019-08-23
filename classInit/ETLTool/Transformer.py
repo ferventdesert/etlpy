@@ -81,6 +81,9 @@ class AutoIndexTF(Transformer):
 
 
 class RenameTF(Transformer):
+    '''列名修改器
+
+    '''
 
     def __init__(self):
         super(RenameTF, self).__init__()
@@ -96,16 +99,27 @@ class RenameTF(Transformer):
 
 
 class DeleteTF(Transformer):
+    '''删除该列
+
+    '''
+
     def __init__(self):
         super(DeleteTF, self).__init__()
         self.OneOutput = False
 
     def transform(self, data, project):
-        if self.Column in data:
-            del data[self.Column]
+        # 遍历data，data为字典
+        for key, value in data.items():
+            # 遍历data内的数据
+            for i in range(len(value)):
+                if self.Column in value[i]:
+                    del value[i][self.Column]
 
 
 class HtmlTF(Transformer):
+    '''html字符转义
+
+    '''
     pass
     # def __init__(self):
     #     super(HtmlTF, self).__init__()
@@ -145,6 +159,13 @@ class RegexSplitTF(Transformer):
         return items[index]
 
 
+class SplitPageTF(Transformer):
+    '''对输入列进行分页
+
+    '''
+    pass
+
+
 class MergeTF(Transformer):
     def __init__(self):
         super(MergeTF, self).__init__()
@@ -152,25 +173,30 @@ class MergeTF(Transformer):
         self.MergeWith = ''
 
     def transform(self, data, project):
-        res = self.Format
         if self.MergeWith == '':
             columns = []
         else:
             columns = [str(data[r]) for r in self.MergeWith.split(' ')]
-        for d in data:
-            columns.append(res.format(str(d[self.Column])))
-        return columns
-        # res = res.format(str(data[self.Column]))
-        # yield res
+        # columns.insert(0, data[self.Column] if self.Column in data else '');
+        result = []
+        columns = data[self.Column]
+        res = self.Format
+        for i in columns:
+            result.append({self.NewColumn: res.format(str(i[self.Column]))})
+        return result
 
 
 class RegexTF(Transformer):
+    '''正则转换器
+
+    '''
+
     def __init__(self):
         super(RegexTF, self).__init__()
         self.Script = ''
         self.OneInput = True
 
-    def init(self):
+        # def init(self):
         self.Regex = re.compile(self.Script)
 
     def transform(self, data, project):
@@ -191,18 +217,26 @@ class ReReplaceTF(RegexTF):
 
 
 class NumberTF(RegexTF):
+    '''提取数字
+
+    '''
+
     def __init__(self):
         super(NumberTF, self).__init__()
         self.Script = ''  # TODO
 
     def transform(self, data, project):
-        t = super(NumberTF, self).transform(data)
+        t = super(NumberTF, self).transform(data, project)
         if t is not None and t != '':
             return int(t)
         return t
 
 
 class SplitTF(Transformer):
+    '''字符串分割
+
+    '''
+
     def __init__(self):
         super(SplitTF, self).__init__()
         self.SplitChar = ''
@@ -252,6 +286,10 @@ class StrExtractTF(Transformer):
 
 
 class PythonTF(Transformer):
+    '''python转换器
+
+    '''
+
     def __init__(self):
         super(PythonTF, self).__init__()
         self.OneOutput = False
@@ -259,7 +297,16 @@ class PythonTF(Transformer):
         self.ScriptWorkMode = '不进行转换'
 
     def transform(self, data, project):
-        result = eval(self.Script, {'value': data[self.Column]}, data)
+        # for d in data:
+        #     for i in d
+        start = data[self.Column]
+        # 语句self.Script的最后一个参数，用作运算的参数
+        end_index = re.findall('[a-zA-Z0-9]+', self.Script)[-1]
+        end = data[end_index]
+        result = []
+        print(start)
+        for i in range(len(start)):
+            result.append(eval(self.Script, start[i], end[i]))
         if result is not None and self.IsMultiYield == False:
             key = self.NewColumn if self.NewColumn != '' else self.Column
             data[key] = result
@@ -291,7 +338,7 @@ class CrawlerTF(Transformer):
     def transform(self, data, project):
         self.init(project)
         crawler = self.crawler
-        print(data)
+        # print(data)
         headers = spider.setHttpItem(crawler.HttpItem)
         # for d in data:
         #     # 爬虫返回的数据
@@ -299,13 +346,18 @@ class CrawlerTF(Transformer):
         #     # 根据xpath规则处理html,
         #     data = spider.processHtml(html_data, crawler.RootXPath, crawler.CrawItems)
         #     print(len(data))
-        for d in data:
-            html_data = spider.getURLdata(d, headers)
-            data = spider.processHtml(html_data, crawler.RootXPath, crawler.CrawItems)
-            yield data
+        result = []
+        for d in data[self.Column]:
+            html_data = spider.getURLdata(d[self.Column], headers)
+            result.append(spider.processHtml(html_data, crawler.RootXPath, crawler.CrawItems))
+        return result
 
 
 class XPathTF(Transformer):
+    '''xpath转换器
+
+    '''
+
     def __init__(self):
         super(XPathTF, self).__init__()
         self.XPath = ''
@@ -337,6 +389,10 @@ class XPathTF(Transformer):
 
 
 class ToListTF(Transformer):
+    '''启动并行
+
+    '''
+
     def transform(self, data, project):
         yield data
 
@@ -452,6 +508,8 @@ class MergeRepeatTF(Transformer):
 
 
 class DelayTF(Transformer):
+    '''延时函数，延时转换器'''
+
     pass
 
 

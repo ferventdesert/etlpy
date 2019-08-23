@@ -9,6 +9,7 @@
 
 from classInit.mongodbSetting import mongo
 from . import spider
+from classInit.ETLTool import Transformer
 
 
 class projExecute():
@@ -57,27 +58,33 @@ class projExecute():
                 # 根据xpath规则处理html,
                 data = spider.processHtml(html_data, module.RootXPath, module.CrawItems)
                 # 将数据存入MongoDB
-                self.saveDataToDB(data)
-
+                # self.saveDataToDB(data)
+                print('SmartCrawler end!!!')
             # 为数据清洗模块
-            elif module_type == 'SmartETLTool':
-
-                pass
+            elif module_type == 'ETLTask':
                 # 迭代模块的各个工具（ETLTool）
-                print(module.AllETLTools)
+                # 生成器生成数据
+                ges = {}
+                # 生成器生成标志符
                 for tool in module.AllETLTools:
                     type = str(tool).split('.')[2]
                     # result为返回值
                     if type == 'Generator':
-                        result = tool.generate()
+                        # 接受生成器返回的数据
+                        # 如果数从文本生成
+                        # if isinstance(tool,Generator.TextGE):
+                        #     url = tool.generate()
+                        # else:
+                        ges[tool.Column] = tool.generate()
                     elif type == 'Transformer':
-                        result = tool.transform(result, self.project)
-
+                        # 如果类型为DeleteTF，删除该列
+                        if isinstance(tool,Transformer.DeleteTF):
+                            tool.transform(ges, self.project)
+                        ges[tool.Column] = tool.transform(ges, self.project)
+                        print(ges[tool.Column])
                     elif type == 'Executor':
                         pass
                     elif type == 'Filter':
                         pass
-                with open('outFile/ETLTool.json', 'a', encoding='utf-8')as f:
-                    for i in result:
-                        f.write(str(i))
-                print('ETLTASK')
+
+                print('ETLTASK end!!!')

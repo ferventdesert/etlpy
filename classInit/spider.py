@@ -6,6 +6,8 @@
 
 工程的爬虫模块
 """
+import re
+
 import requests
 from lxml import etree
 
@@ -80,7 +82,14 @@ def processHtml(html, RootXPath, items):
         # 对xpath出现‘#text[1]’进行特殊处理
         xpath = (RootXPath + i.XPath)
         if xpath.find('#text[1]'):
-            xpath = xpath.replace('#text[1]', '/text()')
+            index = re.search('text.*', xpath)
+            if index:
+                index = index.group(0)
+                # 提取text[12] 中的12
+                # 尚未使用
+                index = re.search('[0-9]+', index)[0]
+            xpath = re.sub('#text.[0-9]*.', '/text()', xpath)
+
         data = []
         for d in html.xpath(xpath):
             # 如果返回为字符串，不改变

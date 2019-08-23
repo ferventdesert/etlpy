@@ -82,7 +82,9 @@ class RepeatFT(Filter):
 
 
 class NullFT(Filter):
+    '''空对象过滤器
 
+    '''
     def filter(self, data):
         if data is None:
             return False

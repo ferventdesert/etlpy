@@ -11,7 +11,7 @@ from classInit import projectLoad
 from classInit.projectExecutor import projExecute
 
 path = 'xmlFile'
-project = projectLoad.Project_LoadXml(path + '/t.xml')
+project = projectLoad.Project_LoadXml(path + '/demo.xml')
 print(project.modules)
 proj = projExecute(project)
 t = proj.projectFunction()
