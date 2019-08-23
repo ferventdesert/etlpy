@@ -10,14 +10,17 @@ etlpy是基于配置文件的数据采集和清洗工具。
 通过可视化和图形化设计工具，快速生成爬虫和数据清洗流程，并保存为xml文件，并由etlpy引擎解析它，即可获得最终的数据结果。
 
 ##2.使用
-使用起来非常简单:
+使用起来非常简单执行main.py文件）:
 ```
-from etl import ETLTool
-tool = ETLTool();
-tool.LoadProject('project.xml', '数据清洗ETL-大众点评');
-datas = tool.RefreshDatas();
-for r in datas:
-  print(r)
+from classInit import projectLoad
+from classInit.projectExecutor import projExecute
+
+path = 'xmlFile'
+project = projectLoad.Project_LoadXml(path + '/demo.xml')
+print(project.modules)
+proj = projExecute(project)
+t = proj.projectFunction()
+
 ```
 RefreshDatas函数返回的是生成器，通过for循环，即可自动读取所有数据。
 
