@@ -1,0 +1,36 @@
+<root>
+  <Doc Author="" Description="没有描述" ImgURL="https://upload-images.jianshu.io/upload_images/9608527-0b84afa59939835c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" Name="demo" PublishTime="23/8/2019 11:55:54" SavePath="E:\code\spider\xmlFile\demo.xml" ShortDescription="" Version="0">
+    <DataCollections>
+      <Children Name="数据清洗_错误信息_15_44_59">
+        <Children __SysERROR="Web Request Error:NotFound" __SysETL="数据清洗" __SysObjectID="从爬虫转换_text_2" __SysTime="23/8/2019 15:45:02" text="https://www.cnblogs1.com" />
+      </Children>
+    </DataCollections>
+    <DBConnections>
+      <Children AutoConnect="True" ConnectString="" DBName="" Name="最近打开的文件" TypeName="FileManager" />
+      <Children AutoConnect="False" ConnectString="" DBName="hawk" Name="MongoDB连接器" TypeName="MongoDBConnector" />
+      <Children AutoConnect="False" ConnectString="" DBName="hawk.db" Name="SQLite数据库" TypeName="SQLiteDatabase" />
+    </DBConnections>
+    <Parameters />
+    <RunningTasks />
+    <Children __KeppOrder="True" DelayTime="0" Description="任务描述" GenerateMode="SerialMode" MaxThreadCount="5" Name="数据清洗" Remark="" SampleMount="20" ScriptPath="" Type="SmartETLTool">
+      <Children Column="text" Content="https://www.cnblogs.com" Enabled="True" Group="Generator" MergeType="Cross" ObjectID="从文本生成_text_1" Type="TextGE" />
+      <Children Column="text" CrawlerSelector="网页采集器" Enabled="True" Group="Transformer" IsMultiYield="True" NewColumn="" ObjectID="从爬虫转换_text_2" OneOutput="False" Type="CrawlerTF" />
+      <Children Column="a_href" Enabled="True" Group="Transformer" IsMultiYield="False" NewColumn="" ObjectID="删除该列_a_href_3" OneOutput="False" Type="DeleteTF" />
+    </Children>
+    <Children Description="任务描述" IsMultiData="List" IsSuperMode="False" Name="网页采集器" Remark="" RootFormat="XPath" RootXPath="/html[1]/body[1]/div[1]/div[4]/div[6]/div" ScriptPath="" ShareCookie="" Type="SmartCrawler" URL="https://www.cnblogs.com">
+      <HttpSet Allowautoredirect="True" Encoding="Unknown" Method="GET" Parameters="User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36&#xA;" Postdata="" Timeout="100000" URL="" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="diggit_diggnum" XPath="/div[1]/div[1]/span[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="digg_diggit_onclick" XPath="/div[1]/div[1]/@onclick[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="digg_digg_tip_id" XPath="/div[1]/div[3]/@id[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="titlelnk" XPath="/div[2]/h3[1]/a[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="pfs_src" XPath="/div[2]/p[1]/a[1]/img[1]/@src[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="a_href" XPath="/div[2]/p[1]/a[1]/@href[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性6" XPath="/div[2]/p[1]/#text[2]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="post_item_foot_lightblue" XPath="/div[2]/div[1]/a[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性8" XPath="/div[2]/div[1]/#text[2]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="article_comment_gray" XPath="/div[2]/div[1]/span[1]/a[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="article_view_gray" XPath="/div[2]/div[1]/span[2]/a[1]" />
+      <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性4" XPath="/div[2]/p[1]/#text[1]" />
+    </Children>
+  </Doc>
+</root>

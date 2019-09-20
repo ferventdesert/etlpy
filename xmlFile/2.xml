@@ -1,0 +1,73 @@
+<root>
+    <Doc Author="" Description="没有描述"
+         ImgURL="https://upload-images.jianshu.io/upload_images/9608527-0b84afa59939835c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+         Name="" PublishTime="18/8/2019 22:50:17" SavePath="C:\Users\yangl\Desktop\t.xml" ShortDescription=""
+         Version="0">
+        <DataCollections/>
+        <DBConnections/>
+        <Parameters/>
+        <RunningTasks/>
+        <Children Description="任务描述" IsMultiData="List" IsSuperMode="False" Name="网页采集器" Remark="" RootFormat="XPath"
+                  RootXPath="/html[1]/body[1]/div[4]/div[1]/ul[1]/li" ScriptPath="" ShareCookie="" Type="SmartCrawler"
+                  URL="https://bj.lianjia.com/ershoufang/pg1/">
+            <HttpSet Allowautoredirect="True" Encoding="Unknown" Method="GET"
+                     Parameters="User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36&#xA;Cookie:all-lj=979909237fcf62bcb16b5a6dbd3b060f;Path=/,lianjia_ssid=f5cd52f4-707f-48d4-b756-53ffae637ab1;expires=Wed, 15-Aug-29 14:50:49 GMT;Max-Age=315360000;domain=.lianjia.com;path=/;select_city=110000;=&#xA;"
+                     Postdata="" Timeout="100000" URL=""/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="noresultRecommend_img_LOGCLICKDATA_vr_item_src" XPath="/a[1]/img[1]/@src[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="noresultRecommend_img_LOGCLICKDATA_vr_item_class" XPath="/a[1]/img[1]/@class[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="noresultRecommend_img_LOGCLICKDATA_lj-lazy_data-original"
+                      XPath="/a[1]/img[2]/@data-original[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="noresultRecommend_img_LOGCLICKDATA_lj-lazy_alt" XPath="/a[1]/img[2]/@alt[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="clear_LOGVIEWDATA_LOGCLICKDATA_noresultRecommend_img_LOGCLICKDATA_href"
+                      XPath="/a[1]/@href[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="clear_LOGVIEWDATA_LOGCLICKDATA_noresultRecommend_img_LOGCLICKDATA_data-log_index"
+                      XPath="/a[1]/@data-log_index[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="clear_LOGVIEWDATA_LOGCLICKDATA_noresultRecommend_img_LOGCLICKDATA_data-housecode"
+                      XPath="/a[1]/@data-housecode[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="title_" XPath="/div[1]/div[1]/a[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="title_yezhushuo_tagBlock"
+                      XPath="/div[1]/div[1]/span[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="a"
+                      XPath="/div[1]/div[2]/div[1]/a[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性10"
+                      XPath="/div[1]/div[2]/div[1]/#text[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性11"
+                      XPath="/div[1]/div[3]/div[1]/#text[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性12"
+                      XPath="/div[1]/div[3]/div[1]/a[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性13"
+                      XPath="/div[1]/div[4]/#text[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="tag_good_class"
+                      XPath="/div[1]/div[5]/span[2]/@class[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="tag_haskey"
+                      XPath="/div[1]/div[5]/span[3]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="tag_taxfree"
+                      XPath="/div[1]/div[5]/span[4]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="span"
+                      XPath="/div[1]/div[6]/div[1]/span[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True" Name="属性18"
+                      XPath="/div[1]/div[6]/div[2]/span[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="sellListContent_clear_LOGVIEWDATA_LOGCLICKDATA_data-lj_action_click_position"
+                      XPath="/@data-lj_action_click_position[1]"/>
+            <Children CrawlType="InnerText" Format="XPath" IsEnabled="True"
+                      Name="sellListContent_clear_LOGVIEWDATA_LOGCLICKDATA_data-lj_action_resblock_id"
+                      XPath="/@data-lj_action_resblock_id[1]"/>
+        </Children>
+        <Children __KeppOrder="True" DelayTime="0" Description="任务描述" GenerateMode="SerialMode" MaxThreadCount="5"
+                  Name="数据清洗" Remark="" SampleMount="20" ScriptPath="" Type="SmartETLTool">
+            <Children Column="id" Enabled="True" Format="" Group="Generator" Interval="1" MaxValue="100"
+                      MergeType="Cross" MinValue="1" ObjectID="生成区间数_id_1" Type="RangeGE"/>
+            <Children Column="id" Enabled="True" Format="https://bj.lianjia.com/ershoufang/pg{0}/" Group="Transformer"
+                      IsMultiYield="False" MergeWith="" NewColumn="url" ObjectID="合并多列_id_2" OneOutput="True"
+                      ReferFormat="https://bj.lianjia.com/ershoufang/pg1/" Type="MergeTF"/>
+        </Children>
+    </Doc>
+</root>
